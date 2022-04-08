@@ -1,19 +1,21 @@
-.App {
+/*.App {
   padding: 30px;
   display: flex;
-}
+}*/
 
-.App > div {
+/*.App > div {
   margin-right: 50px;
-}
+}*/
 .is-done {
   opacity: 0.5;
 }
-.active {
+/*.active {
   background-color: cadetblue;
-}
+}*/
+/*
 .error {
   background-color: lightpink ;
   border: 2px solid red;
   outline: transparent;
 }
+*/

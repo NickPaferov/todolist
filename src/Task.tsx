@@ -1,3 +1,5 @@
+import {Checkbox, IconButton, ListItem} from '@material-ui/core';
+import {DeleteOutline} from '@material-ui/icons';
 import React, {ChangeEvent} from 'react';
 import {TaskType} from "./App";
 import EditableSpan from "./EditableSpan";
@@ -32,15 +34,27 @@ const Task: React.FC<TaskPropsType> = (
     const onChangeChangeTaskTitle = (title: string) => {
         changeTaskTitle(id, title)
     }
+
     return (
-        <li className={isDone ? "is-done" : ""}>
+        <ListItem divider>
+            <span className={isDone ? "is-done" : ""}>
+                <Checkbox color="primary"
+                          size="small"
+                          onChange={onChangeChangeTaskStatus}
+                          checked={isDone}/>
+                {/*
             <input
                 type="checkbox"
                 onChange={onChangeChangeTaskStatus}
                 checked={isDone}/>
-            <EditableSpan title={title} changeTitle={onChangeChangeTaskTitle}/>
-            <button onClick={onClickRemoveTask}>x</button>
-        </li>
+*/}
+                <EditableSpan title={title} changeTitle={onChangeChangeTaskTitle}/>
+            </span>
+            <IconButton onClick={onClickRemoveTask}>
+                <DeleteOutline/>
+            </IconButton>
+            {/*<button onClick={onClickRemoveTask}>x</button>*/}
+        </ListItem>
     );
 };
 

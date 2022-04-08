@@ -4,6 +4,7 @@ import {FilterValuesType, TaskType} from "./App";
 import Task from "./Task";
 import AddItemForm from "./AddItemForm";
 import ButtonsBlock from "./ButtonsBlock";
+import { List } from '@material-ui/core';
 
 type TodoListPropsType = {
     id: string
@@ -26,7 +27,6 @@ const TodoList = (props: TodoListPropsType) => {
         const removeTask = (taskID: string) => props.removeTask(taskID, props.id)
         const changeTaskStatus = (taskID: string, isDone: boolean) =>
             props.changeTaskStatus(taskID, isDone, props.id)
-
         const changeTaskTitle = (taskID: string, title: string) =>
             props.changeTaskTitle(taskID, title, props.id)
         return (
@@ -42,12 +42,9 @@ const TodoList = (props: TodoListPropsType) => {
             />
         )
     })
-    // const tasksComponents = props.tasks.map(t => <Task key={t.id} {...t} />)
 
-    const setFilterValue = (filter: FilterValuesType) => () => props.changeFilter(filter, props.id)
-    // const setAllFilter = () => props.changeFilter("all", props.id)
-    // const setActiveFilter = () => props.changeFilter("active", props.id)
-    // const setCompletedFilter = () => props.changeFilter("completed", props.id)
+    const setFilterValue = (filter: FilterValuesType) =>
+        () => props.changeFilter(filter, props.id)
     const removeTodoList = () => props.removeTodoList(props.id)
     const addTask = (title: string) => props.addTask(title, props.id)
     const changeTodoListTitle = (title: string) => props.changeTodoListTitle(title, props.id)
@@ -58,12 +55,10 @@ const TodoList = (props: TodoListPropsType) => {
                 removeTodoList={removeTodoList}
                 changeTodoListTitle={changeTodoListTitle}
             />
-            <div>
-                <AddItemForm addItem={addTask}/>
-            </div>
-            <ul>
+            <AddItemForm addItem={addTask} />
+            <List>
                 {tasksComponents}
-            </ul>
+            </List>
             <ButtonsBlock filter={props.filter} setFilterValue={setFilterValue}/>
         </div>
     );
