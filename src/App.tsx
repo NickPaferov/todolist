@@ -15,7 +15,7 @@ export type TaskType = {
     isDone: boolean
 }
 
-type TodoListType = {
+export type TodoListType = {
     id: string
     title: string
     filter: FilterValuesType
@@ -104,18 +104,6 @@ const App = () => {
         })
     }
 
-    const changeTodoListFilter = (filter: FilterValuesType, todoListID: string) => {
-        const upDatedTodoLists = todoLists.map(tl => tl.id === todoListID
-            ? {...tl, filter: filter}
-            : tl)
-        setTodoLists(upDatedTodoLists)
-    }
-    const changeTodoListTitle = (title: string, todoListID: string) => {
-        const upDatedTodoLists = todoLists.map(tl => tl.id === todoListID
-            ? {...tl, title}
-            : tl)
-        setTodoLists(upDatedTodoLists)
-    }
     const removeTodoList = (todoListID: string) => {
         setTodoLists(todoLists.filter(tl => tl.id !== todoListID))
         delete tasks[todoListID]
@@ -127,6 +115,20 @@ const App = () => {
         }
         setTodoLists([...todoLists, newTodoList])
         setTasks({...tasks, [newTodoListID]: []})
+    }
+
+    const changeTodoListTitle = (title: string, todoListID: string) => {
+        const upDatedTodoLists = todoLists.map(tl => tl.id === todoListID
+            ? {...tl, title}
+            : tl)
+        setTodoLists(upDatedTodoLists)
+    }
+
+    const changeTodoListFilter = (filter: FilterValuesType, todoListID: string) => {
+        const upDatedTodoLists = todoLists.map(tl => tl.id === todoListID
+            ? {...tl, filter: filter}
+            : tl)
+        setTodoLists(upDatedTodoLists)
     }
 
     const getTasksForRender = (todoList: TodoListType) => {
