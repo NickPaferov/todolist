@@ -66,7 +66,7 @@ export function Todolist(props: PropsType) {
 
                     return <li key={t.id} className={t.isDone ? "is-done" : ""}>
                         {/*<input type="checkbox" onChange={onChangeHandler} checked={t.isDone}/>*/}
-                        <Checkbox defaultChecked onChange={onChangeHandler}/>
+                        <Checkbox checked={t.isDone} onChange={onChangeHandler}/>
                         <EditableSpan value={t.title} onChange={onTitleChangeHandler}/>
                         {/*<button onClick={onClickHandler}>x</button>*/}
                         <IconButton aria-label="delete" onClick={onClickHandler}>
