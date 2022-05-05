@@ -1,10 +1,10 @@
 import React, {useState} from 'react';
 import './App.css';
-import TodoList from "./TodoList";
 import {v1} from "uuid";
 import AddItemForm from "./AddItemForm";
 import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from '@material-ui/core';
 import {Menu} from '@material-ui/icons';
+import TodoList from './Todolist';
 // C
 // R
 // U
@@ -22,7 +22,7 @@ export type TodoListType = {
 
 }
 
-type TaskStateType = {
+export type TasksStateType = {
     [todoListID: string]: Array<TaskType>
 }
 
@@ -39,7 +39,7 @@ const App = () => {
         {id: todoListID_2, title: "What to buy", filter: "all"},
         {id: todoListID_3, title: "What to read", filter: "all"},
     ])
-    const [tasks, setTasks] = useState<TaskStateType>({
+    const [tasks, setTasks] = useState<TasksStateType>({
         [todoListID_1]: [
             {id: v1(), title: "HTML&CSS", isDone: true},
             {id: v1(), title: "JS/ES6", isDone: true},
@@ -63,12 +63,12 @@ const App = () => {
         // const copyTasks = {...tasks}
         // copyTasks[todoListID] = filteredTasks
         // setTasks(copyTasks)
-
         setTasks({
             ...tasks,
             [todoListID]: tasks[todoListID].filter(t => t.id !== taskID)
         })
     }
+
     const addTask = (title: string, todoListID: string) => {
         const newTask: TaskType = {id: v1(), title, isDone: false}
         // const tasksFromTodoList = tasks[todoListID]
@@ -79,13 +79,13 @@ const App = () => {
 
         setTasks({...tasks, [todoListID]: [newTask, ...tasks[todoListID]]})
     }
+
     const changeTaskStatus = (taskID: string, isDone: boolean, todoListID: string) => {
         // const tasksFromTodoList = tasks[todoListID]
         // const upDatedTasks = tasksFromTodoList.map(t => t.id === taskID ? {...t, isDone}: t)
         // const copyTasks = {...tasks}
         // copyTasks[todoListID] = upDatedTasks
         // setTasks(copyTasks)
-
         setTasks({
             ...tasks,
             [todoListID]: tasks[todoListID].map(t => t.id === taskID ? {
@@ -94,6 +94,7 @@ const App = () => {
             } : t)
         })
     }
+
     const changeTaskTitle = (taskID: string, title: string, todoListID: string) => {
         setTasks({
             ...tasks,
@@ -108,6 +109,7 @@ const App = () => {
         setTodoLists(todoLists.filter(tl => tl.id !== todoListID))
         delete tasks[todoListID]
     }
+
     const addTodoList = (title: string) => {
         const newTodoListID = v1()
         const newTodoList: TodoListType = {
@@ -146,21 +148,21 @@ const App = () => {
         const tasksForRender = getTasksForRender(tl)
         return (
             <Grid item key={tl.id}>
-            <Paper elevation={5} style={{padding: "20px"}}>
-                <TodoList
-                                        id={tl.id}
-                    title={tl.title}
-                    tasks={tasksForRender}
-                    filter={tl.filter}
-                    removeTask={removeTask}
-                    changeFilter={changeTodoListFilter}
-                    addTask={addTask}
-                    removeTodoList={removeTodoList}
-                    changeTaskStatus={changeTaskStatus}
-                    changeTaskTitle={changeTaskTitle}
-                    changeTodoListTitle={changeTodoListTitle}
-                />
-            </Paper>
+                <Paper elevation={5} style={{padding: "20px"}}>
+                    <TodoList
+                        id={tl.id}
+                        title={tl.title}
+                        tasks={tasksForRender}
+                        filter={tl.filter}
+                        removeTask={removeTask}
+                        changeFilter={changeTodoListFilter}
+                        addTask={addTask}
+                        removeTodoList={removeTodoList}
+                        changeTaskStatus={changeTaskStatus}
+                        changeTaskTitle={changeTaskTitle}
+                        changeTodoListTitle={changeTodoListTitle}
+                    />
+                </Paper>
             </Grid>
         )
     })
