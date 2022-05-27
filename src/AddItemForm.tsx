@@ -6,7 +6,10 @@ type AddItemFormPropsType = {
     addItem: (title: string) => void
 }
 
-const AddItemForm: React.FC<AddItemFormPropsType> = (props) => {
+const AddItemForm: React.FC<AddItemFormPropsType> = React.memo((props) => {
+
+    console.log("AddItemForm")
+
     const [title, setTitle] = useState<string>("")
     const [error, setError] = useState<boolean>(false)
 
@@ -25,11 +28,11 @@ const AddItemForm: React.FC<AddItemFormPropsType> = (props) => {
         setTitle("")
     }
 
-   /* const errorMessageStyle = {color: "white", backgroundColor: "red"}
-    const errorMessage = error
-        ? <div style={errorMessageStyle}>Title is required!</div>
-        : null
-*/
+    /* const errorMessageStyle = {color: "white", backgroundColor: "red"}
+     const errorMessage = error
+         ? <div style={errorMessageStyle}>Title is required!</div>
+         : null
+ */
     return (
         <div>
             <TextField value={title}
@@ -54,6 +57,6 @@ const AddItemForm: React.FC<AddItemFormPropsType> = (props) => {
             {/*{errorMessage}*/}
         </div>
     );
-};
+});
 
 export default AddItemForm;

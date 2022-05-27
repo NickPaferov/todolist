@@ -9,7 +9,7 @@ type TodoListHeaderPropsType = {
     changeTodoListTitle: (newTitle: string) => void
 }
 
-const TodoListHeader: React.FC<TodoListHeaderPropsType> = (
+const TodoListHeader: React.FC<TodoListHeaderPropsType> = React.memo((
     {
         title,
         changeTodoListTitle,
@@ -17,20 +17,22 @@ const TodoListHeader: React.FC<TodoListHeaderPropsType> = (
     }
 ) => {
 
+    console.log("TodoListHeader")
+
     return (
         <div style={{textAlign: "center"}}>
-        <h3>
-            <EditableSpan title={title} changeTitle={changeTodoListTitle}/>
-            <IconButton onClick={props.removeTodoList}>
-                <DeleteOutline/>
-            </IconButton>
-{/*
+            <h3>
+                <EditableSpan title={title} changeTitle={changeTodoListTitle}/>
+                <IconButton onClick={props.removeTodoList}>
+                    <DeleteOutline/>
+                </IconButton>
+                {/*
             <Button onClickHandler={props.removeTodoList} title={"x"}
                     active={false}/>
 */}
-        </h3>
+            </h3>
         </div>
     );
-};
+});
 
 export default TodoListHeader;
