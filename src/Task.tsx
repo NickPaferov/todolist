@@ -1,6 +1,6 @@
 import {Checkbox, IconButton, ListItem} from '@material-ui/core';
 import {DeleteOutline} from '@material-ui/icons';
-import React, {ChangeEvent} from 'react';
+import React, {ChangeEvent, useCallback} from 'react';
 import {TaskType} from "./App";
 import EditableSpan from "./EditableSpan";
 
@@ -10,7 +10,7 @@ type TaskPropsType = TaskType & {
     changeTaskTitle: (taskID: string, title: string) => void
 }
 
-const Task: React.FC<TaskPropsType> = (
+const Task: React.FC<TaskPropsType> = React.memo((
     {
         id,
         isDone,
@@ -28,12 +28,14 @@ const Task: React.FC<TaskPropsType> = (
     // const changeTaskStatus = props.changeTaskStatus
     // const {id, isDone, title, removeTask, changeTaskStatus} = props
 
-    const onClickRemoveTask = () => removeTask(id)
-    const onChangeChangeTaskStatus = (e: ChangeEvent<HTMLInputElement>) =>
-        changeTaskStatus(id, e.currentTarget.checked)
-    const onChangeChangeTaskTitle = (title: string) => {
+    console.log("Task")
+
+    const onClickRemoveTask = useCallback(() => removeTask(id), [removeTask, id])
+    const onChangeChangeTaskStatus = useCallback((e: ChangeEvent<HTMLInputElement>) =>
+        changeTaskStatus(id, e.currentTarget.checked), [changeTaskStatus, id])
+    const onChangeChangeTaskTitle = useCallback((title: string) => {
         changeTaskTitle(id, title)
-    }
+    }, [changeTaskTitle, id])
 
     return (
         <ListItem divider>
@@ -56,6 +58,6 @@ const Task: React.FC<TaskPropsType> = (
             {/*<button onClick={onClickRemoveTask}>x</button>*/}
         </ListItem>
     );
-};
+});
 
 export default Task;

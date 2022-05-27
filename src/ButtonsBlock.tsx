@@ -7,11 +7,14 @@ type ButtonsBlockPropsType = {
     setFilterValue: (filter: FilterValuesType) => () => void
 }
 
-const ButtonsBlock: FC<ButtonsBlockPropsType> = (
+const ButtonsBlock: FC<ButtonsBlockPropsType> = React.memo((
     {
         filter,
         setFilterValue
     }) => {
+
+    console.log("ButtonsBlock")
+
     return (
         <ButtonGroup variant="contained" size="small">
             <Button color={filter === "all" ? "secondary" : "primary"}
@@ -37,6 +40,6 @@ const ButtonsBlock: FC<ButtonsBlockPropsType> = (
                 />*/}
         </ButtonGroup>
     );
-};
+});
 
 export default ButtonsBlock;

@@ -9,13 +9,15 @@ type TodoListHeaderPropsType = {
     changeTodoListTitle: (newTitle: string) => void
 }
 
-const TodoListHeader: React.FC<TodoListHeaderPropsType> = (
+const TodoListHeader: React.FC<TodoListHeaderPropsType> = React.memo((
     {
         title,
         changeTodoListTitle,
         ...props
     }
 ) => {
+
+    console.log("TodoListHeader")
 
     return (
         <div style={{textAlign: "center"}}>
@@ -31,6 +33,6 @@ const TodoListHeader: React.FC<TodoListHeaderPropsType> = (
         </h3>
         </div>
     );
-};
+});
 
 export default TodoListHeader;
