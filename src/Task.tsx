@@ -1,13 +1,13 @@
 import {Checkbox, IconButton, ListItem} from '@material-ui/core';
 import {DeleteOutline} from '@material-ui/icons';
 import React, {ChangeEvent, useCallback} from 'react';
-import {TaskType} from "./App";
+import {TaskType} from './AppWithRedux';
 import EditableSpan from "./EditableSpan";
 
 type TaskPropsType = TaskType & {
-    removeTask: (taskID: string) => void
-    changeTaskStatus: (taskID: string, isDone: boolean) => void
-    changeTaskTitle: (taskID: string, title: string) => void
+    removeTask: (id: string) => void
+    changeTaskStatus: (id: string, isDone: boolean) => void
+    changeTaskTitle: (id: string, title: string) => void
 }
 
 const Task: React.FC<TaskPropsType> = React.memo((

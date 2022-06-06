@@ -1,10 +1,10 @@
 import React, {useCallback} from 'react';
 import TodoListHeader from "./TodoListHeader";
-import {FilterValuesType, TaskType} from "./App";
 import Task from "./Task";
 import AddItemForm from "./AddItemForm";
 import ButtonsBlock from "./ButtonsBlock";
 import {List} from '@material-ui/core';
+import {FilterValuesType, TaskType} from "./AppWithRedux";
 
 type TodoListPropsType = {
     id: string
