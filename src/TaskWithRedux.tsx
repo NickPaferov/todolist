@@ -1,23 +1,21 @@
 import {Checkbox, IconButton, ListItem} from '@material-ui/core';
 import {DeleteOutline} from '@material-ui/icons';
 import React, {ChangeEvent, useCallback} from 'react';
-import {TaskType} from "./App";
 import EditableSpan from "./EditableSpan";
-import {useDispatch, useSelector} from "react-redux";
-import {AppRootStateType} from "./store/store";
+import {useDispatch} from "react-redux";
 import {changeTaskStatusAC, changeTaskTitleAC, removeTaskAC} from "./store/tasks-reducer";
+import {TaskType} from './AppWithRedux';
 
 type TaskPropsType = {
-    taskID: string
+    task: TaskType
     todoListID: string
 }
 
-const TaskWithRedux: React.FC<TaskPropsType> = React.memo(({taskID, todoListID}) => {
+const TaskWithRedux: React.FC<TaskPropsType> = React.memo(({task, todoListID}) => {
 
     console.log("Task")
 
-    const task = useSelector<AppRootStateType, TaskType>(state => state.tasks[todoListID]
-        .filter(t => t.id === taskID)[0])
+    const taskID = task.id
 
     const dispatch = useDispatch()
 

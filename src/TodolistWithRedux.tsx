@@ -36,7 +36,7 @@ const TodolistWithRedux = React.memo((props: TodoListPropsType) => {
             <TaskWithRedux
                 key={t.id}
                 //{...t}
-                taskID={t.id}
+                task={t}
                 todoListID={props.todoListID}
             />
         )
