@@ -1,6 +1,6 @@
 import {Button, ButtonGroup} from '@material-ui/core';
 import React, {FC} from 'react';
-import {FilterValuesType} from "./App";
+import { FilterValuesType } from './store/todolists-reducer';
 
 type ButtonsBlockPropsType = {
     filter: FilterValuesType

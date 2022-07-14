@@ -1,19 +1,19 @@
 import {Checkbox, IconButton, ListItem} from '@material-ui/core';
 import {DeleteOutline} from '@material-ui/icons';
 import React, {ChangeEvent, useCallback} from 'react';
-import {TaskType} from './AppWithRedux';
 import EditableSpan from "./EditableSpan";
+import {TaskStatuses, TaskType} from "./api/todolist-api";
 
 type TaskPropsType = TaskType & {
     removeTask: (id: string) => void
-    changeTaskStatus: (id: string, isDone: boolean) => void
+    changeTaskStatus: (id: string, status: TaskStatuses) => void
     changeTaskTitle: (id: string, title: string) => void
 }
 
 const Task: React.FC<TaskPropsType> = React.memo((
     {
         id,
-        isDone,
+        status,
         title,
         removeTask,
         changeTaskStatus,
@@ -22,7 +22,7 @@ const Task: React.FC<TaskPropsType> = React.memo((
     }
 ) => {
     // const id = props.id
-    // const isDone = props.isDone
+    // const status = props.status
     // const title = props.title
     // const removeTask = props.removeTask
     // const changeTaskStatus = props.changeTaskStatus
@@ -31,19 +31,20 @@ const Task: React.FC<TaskPropsType> = React.memo((
     console.log("Task")
 
     const onClickRemoveTask = useCallback(() => removeTask(id), [removeTask, id])
-    const onChangeChangeTaskStatus = useCallback((e: ChangeEvent<HTMLInputElement>) =>
-        changeTaskStatus(id, e.currentTarget.checked), [changeTaskStatus, id])
+    const onChangeChangeTaskStatus = useCallback((e: ChangeEvent<HTMLInputElement>) => {
+        changeTaskStatus(id, e.currentTarget.checked ? TaskStatuses.Completed : TaskStatuses.New)
+    }, [changeTaskStatus, id])
     const onChangeChangeTaskTitle = useCallback((title: string) => {
         changeTaskTitle(id, title)
     }, [changeTaskTitle, id])
 
     return (
         <ListItem divider>
-            <span className={isDone ? "is-done" : ""}>
+            <span className={status === TaskStatuses.Completed ? "is-done" : ""}>
                 <Checkbox color="primary"
                           size="small"
                           onChange={onChangeChangeTaskStatus}
-                          checked={isDone}/>
+                          checked={status === TaskStatuses.Completed}/>
                 {/*
             <input
                 type="checkbox"

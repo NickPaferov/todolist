@@ -4,10 +4,11 @@ import Task from "./Task";
 import AddItemForm from "./AddItemForm";
 import ButtonsBlock from "./ButtonsBlock";
 import {List} from '@material-ui/core';
-import {FilterValuesType, TaskType} from "./AppWithRedux";
+import {TaskStatuses, TaskType} from './api/todolist-api';
+import {FilterValuesType} from "./store/todolists-reducer";
 
 type TodoListPropsType = {
-    id: string
+    todoListID: string
     title: string
     tasks: Array<TaskType>
     filter: FilterValuesType
@@ -15,7 +16,7 @@ type TodoListPropsType = {
     changeFilter: (filter: FilterValuesType, todoListID: string) => void
     addTask: (title: string, todoListID: string) => void
     removeTodoList: (todoListID: string) => void
-    changeTaskStatus: (taskID: string, isDone: boolean, todoListID: string) => void
+    changeTaskStatus: (taskID: string, status: TaskStatuses, todoListID: string) => void
     changeTaskTitle: (taskID: string, title: string, todoListID: string) => void
     changeTodoListTitle: (title: string, todoListID: string) => void
 }
@@ -26,18 +27,18 @@ const TodoList = React.memo((props: TodoListPropsType) => {
 
     let tasksForRender = props.tasks
     if (props.filter === "active") {
-        tasksForRender = props.tasks.filter(t => !t.isDone)
+        tasksForRender = props.tasks.filter(t => t.status === TaskStatuses.New)
     }
     if (props.filter === "completed") {
-        tasksForRender = props.tasks.filter(t => t.isDone)
+        tasksForRender = props.tasks.filter(t => t.status === TaskStatuses.Completed)
     }
 
     const removeTask = useCallback((taskID: string) =>
-        props.removeTask(taskID, props.id), [props.removeTask, props.id])
-    const changeTaskStatus = useCallback((taskID: string, isDone: boolean) =>
-        props.changeTaskStatus(taskID, isDone, props.id), [props.changeTaskStatus, props.id])
+        props.removeTask(taskID, props.todoListID), [props.removeTask, props.todoListID])
+    const changeTaskStatus = useCallback((taskID: string, status: TaskStatuses) =>
+        props.changeTaskStatus(taskID, status, props.todoListID), [props.changeTaskStatus, props.todoListID])
     const changeTaskTitle = useCallback((taskID: string, title: string) =>
-        props.changeTaskTitle(taskID, title, props.id), [props.changeTaskTitle, props.id])
+        props.changeTaskTitle(taskID, title, props.todoListID), [props.changeTaskTitle, props.todoListID])
 
     const tasksComponents = tasksForRender.map(t => {
         return (
@@ -46,22 +47,30 @@ const TodoList = React.memo((props: TodoListPropsType) => {
                 //{...t}
                 id={t.id}
                 title={t.title}
-                isDone={t.isDone}
+                status={t.status}
                 removeTask={removeTask}
                 changeTaskStatus={changeTaskStatus}
                 changeTaskTitle={changeTaskTitle}
+                todoListId={props.todoListID}
+                description={t.description}
+                completed={t.completed}
+                startDate={t.startDate}
+                deadline={t.deadline}
+                addedDate={t.addedDate}
+                order={t.order}
+                priority={t.priority}
             />
         )
     })
 
     const setFilterValue = useCallback((filter: FilterValuesType) =>
-        () => props.changeFilter(filter, props.id), [props.changeFilter, props.id])
+        () => props.changeFilter(filter, props.todoListID), [props.changeFilter, props.todoListID])
     const removeTodoList = useCallback(() =>
-        props.removeTodoList(props.id), [props.removeTodoList, props.id])
+        props.removeTodoList(props.todoListID), [props.removeTodoList, props.todoListID])
     const addTask = useCallback((title: string) =>
-        props.addTask(title, props.id), [props.addTask, props.id])
+        props.addTask(title, props.todoListID), [props.addTask, props.todoListID])
     const changeTodoListTitle = useCallback((title: string) =>
-        props.changeTodoListTitle(title, props.id), [props.changeTodoListTitle, props.id])
+        props.changeTodoListTitle(title, props.todoListID), [props.changeTodoListTitle, props.todoListID])
     return (
         <div>
             <TodoListHeader

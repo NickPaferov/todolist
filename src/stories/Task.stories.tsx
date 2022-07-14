@@ -2,6 +2,7 @@ import React from 'react';
 import {ComponentMeta, ComponentStory} from '@storybook/react';
 import {action} from "@storybook/addon-actions";
 import Task from "../Task";
+import {TaskStatuses} from "../api/todolist-api";
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {
@@ -23,7 +24,7 @@ export const TaskIsDoneStory = Template.bind({});
 TaskIsDoneStory.args = {
     id: '1',
     title: 'HTML',
-    isDone: true
+    status: TaskStatuses.Completed
 };
 
 export const TaskIsNotDoneStory = Template.bind({});
@@ -31,5 +32,5 @@ export const TaskIsNotDoneStory = Template.bind({});
 TaskIsNotDoneStory.args = {
     id: '2',
     title: 'JS',
-    isDone: false
+    status: TaskStatuses.New
 };

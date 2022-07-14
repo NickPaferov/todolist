@@ -9,32 +9,20 @@ import {
     addTodolistAC,
     changeTodolistFilterAC,
     changeTodolistTitleAC,
-    removeTodolistAC,
+    FilterValuesType,
+    removeTodolistAC, TodolistDomainType,
     todolistsReducer
 } from "./store/todolists-reducer";
 import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC, tasksReducer} from "./store/tasks-reducer";
+import {TaskPriorities, TaskStatuses, TaskType} from './api/todolist-api';
 // C
 // R
 // U
 // D
-export type TaskType = {
-    id: string
-    title: string
-    isDone: boolean
-}
-
-export type TodoListType = {
-    id: string
-    title: string
-    filter: FilterValuesType
-
-}
 
 export type TasksStateType = {
     [todoListID: string]: Array<TaskType>
 }
-
-export type FilterValuesType = "all" | "active" | "completed"
 
 const AppWithReducers = () => {
     // BLL:
@@ -43,26 +31,35 @@ const AppWithReducers = () => {
     const todoListID_3 = v1()
 
     const [todoLists, dispatchToTodoLists] = useReducer(todolistsReducer, [
-        {id: todoListID_1, title: "What to learn", filter: "all"},
-        {id: todoListID_2, title: "What to buy", filter: "all"},
-        {id: todoListID_3, title: "What to read", filter: "all"},
+        {id: todoListID_1, title: "What to learn", addedDate: '', order: 0, filter: "all"},
+        {id: todoListID_2, title: "What to buy", addedDate: '', order: 0, filter: "all"},
+        {id: todoListID_3, title: "What to read", addedDate: '', order: 0, filter: "all"},
     ])
 
     const [tasks, dispatchToTasks] = useReducer(tasksReducer, {
         [todoListID_1]: [
-            {id: v1(), title: "HTML&CSS", isDone: true},
-            {id: v1(), title: "JS/ES6", isDone: true},
-            {id: v1(), title: "REACT", isDone: true},
+            {id: v1(), title: "HTML&CSS", status: TaskStatuses.Completed, todoListId: todoListID_1, description: '',
+                completed: true, startDate: '', deadline: '', addedDate: '', order: 0, priority: TaskPriorities.Low},
+            {id: v1(), title: "JS/ES6", status: TaskStatuses.Completed, todoListId: todoListID_1, description: '',
+                completed: true, startDate: '', deadline: '', addedDate: '', order: 0, priority: TaskPriorities.Low},
+            {id: v1(), title: "REACT", status: TaskStatuses.Completed, todoListId: todoListID_1, description: '',
+                completed: true, startDate: '', deadline: '', addedDate: '', order: 0, priority: TaskPriorities.Low},
         ],
         [todoListID_2]: [
-            {id: v1(), title: "MILK", isDone: true},
-            {id: v1(), title: "BREAD", isDone: false},
-            {id: v1(), title: "MEAT", isDone: true},
+            {id: v1(), title: "MILK", status: TaskStatuses.Completed, todoListId: todoListID_2, description: '',
+                completed: true, startDate: '', deadline: '', addedDate: '', order: 0, priority: TaskPriorities.Low},
+            {id: v1(), title: "BREAD", status: TaskStatuses.New, todoListId: todoListID_2, description: '',
+                completed: false, startDate: '', deadline: '', addedDate: '', order: 0, priority: TaskPriorities.Low},
+            {id: v1(), title: "MEAT", status: TaskStatuses.Completed, todoListId: todoListID_2, description: '',
+                completed: true, startDate: '', deadline: '', addedDate: '', order: 0, priority: TaskPriorities.Low},
         ],
         [todoListID_3]: [
-            {id: v1(), title: "You don't know JS", isDone: true},
-            {id: v1(), title: "Understanding Redux", isDone: false},
-            {id: v1(), title: "How to learn React", isDone: false},
+            {id: v1(), title: "You don't know JS", status: TaskStatuses.Completed, todoListId: todoListID_3, description: '',
+                completed: true, startDate: '', deadline: '', addedDate: '', order: 0, priority: TaskPriorities.Low},
+            {id: v1(), title: "Understanding Redux", status: TaskStatuses.New, todoListId: todoListID_3, description: '',
+                completed: false, startDate: '', deadline: '', addedDate: '', order: 0, priority: TaskPriorities.Low},
+            {id: v1(), title: "How to learn React", status: TaskStatuses.New, todoListId: todoListID_3, description: '',
+                completed: false, startDate: '', deadline: '', addedDate: '', order: 0, priority: TaskPriorities.Low},
         ],
     })
 
@@ -78,10 +75,10 @@ const AppWithReducers = () => {
         dispatchToTasks(addTaskAC(title, todoListID))
     }
 
-    const changeTaskStatus = (taskID: string, isDone: boolean, todoListID: string) => {
+    const changeTaskStatus = (taskID: string, status: TaskStatuses, todoListID: string) => {
         // let action = changeTaskStatusAC(taskID, isDone, todoListID)
         // dispatchToTasks(action)
-        dispatchToTasks(changeTaskStatusAC(taskID, isDone, todoListID))
+        dispatchToTasks(changeTaskStatusAC(taskID, status, todoListID))
     }
 
     const changeTaskTitle = (taskID: string, title: string, todoListID: string) => {
@@ -114,12 +111,12 @@ const AppWithReducers = () => {
         dispatchToTodoLists(changeTodolistFilterAC(todoListID, filter))
     }
 
-    const getTasksForRender = (todoList: TodoListType) => {
+    const getTasksForRender = (todoList: TodolistDomainType) => {
         switch (todoList.filter) {
             case "active":
-                return tasks[todoList.id].filter(t => !t.isDone)
+                return tasks[todoList.id].filter(t => t.status === TaskStatuses.New)
             case "completed":
-                return tasks[todoList.id].filter(t => t.isDone)
+                return tasks[todoList.id].filter(t => t.status === TaskStatuses.Completed)
             default:
                 return tasks[todoList.id]
         }
@@ -131,7 +128,7 @@ const AppWithReducers = () => {
             <Grid item key={tl.id}>
                 <Paper elevation={5} style={{padding: "20px"}}>
                     <TodoList
-                        id={tl.id}
+                        todoListID={tl.id}
                         title={tl.title}
                         tasks={tasksForRender}
                         filter={tl.filter}
