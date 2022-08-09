@@ -1,4 +1,4 @@
-import React, {useCallback} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import TodoListHeader from "./TodoListHeader";
 import Task from "./Task";
 import AddItemForm from "./AddItemForm";
@@ -6,6 +6,8 @@ import ButtonsBlock from "./ButtonsBlock";
 import {List} from '@material-ui/core';
 import {TaskStatuses, TaskType} from './api/todolist-api';
 import {FilterValuesType} from "./store/todolists-reducer";
+import {fetchTasksTC} from "./store/tasks-reducer";
+import {useAppDispatch} from "./store/store";
 
 type TodoListPropsType = {
     todoListID: string
@@ -24,6 +26,12 @@ type TodoListPropsType = {
 const TodoList = React.memo((props: TodoListPropsType) => {
 
     console.log("Todolist")
+
+    const dispatch = useAppDispatch()
+
+    useEffect(() => {
+        dispatch(fetchTasksTC(props.todoListID))
+    }, [])
 
     let tasksForRender = props.tasks
     if (props.filter === "active") {
