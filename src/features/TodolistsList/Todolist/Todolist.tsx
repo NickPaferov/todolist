@@ -1,13 +1,13 @@
 import React, {useCallback, useEffect} from 'react';
-import TodoListHeader from "./TodoListHeader";
-import Task from "./Task";
-import AddItemForm from "./AddItemForm";
-import ButtonsBlock from "./ButtonsBlock";
+import TodoListHeader from "./ToddolistHeader/TodoListHeader";
+import Task from "./Task/Task";
+import AddItemForm from "../../../components/AddItemForm/AddItemForm";
+import ButtonsBlock from "../../../components/ButtonsBlock/ButtonsBlock";
 import {List} from '@material-ui/core';
-import {TaskStatuses, TaskType} from './api/todolist-api';
-import {FilterValuesType} from "./store/todolists-reducer";
-import {fetchTasksTC} from "./store/tasks-reducer";
-import {useAppDispatch} from "./store/store";
+import {TaskStatuses, TaskType} from '../../../api/todolist-api';
+import {FilterValuesType} from "../todolists-reducer";
+import {fetchTasksTC} from "../tasks-reducer";
+import {useAppDispatch} from "../../../app/store";
 
 type TodoListPropsType = {
     todoListID: string
@@ -47,30 +47,6 @@ const TodoList = React.memo((props: TodoListPropsType) => {
         props.changeTaskStatus(taskID, status, props.todoListID), [props.changeTaskStatus, props.todoListID])
     const changeTaskTitle = useCallback((taskID: string, title: string) =>
         props.changeTaskTitle(taskID, title, props.todoListID), [props.changeTaskTitle, props.todoListID])
-
-    const tasksComponents = tasksForRender.map(t => {
-        return (
-            <Task
-                key={t.id}
-                //{...t}
-                id={t.id}
-                title={t.title}
-                status={t.status}
-                removeTask={removeTask}
-                changeTaskStatus={changeTaskStatus}
-                changeTaskTitle={changeTaskTitle}
-                todoListId={props.todoListID}
-                description={t.description}
-                completed={t.completed}
-                startDate={t.startDate}
-                deadline={t.deadline}
-                addedDate={t.addedDate}
-                order={t.order}
-                priority={t.priority}
-            />
-        )
-    })
-
     const setFilterValue = useCallback((filter: FilterValuesType) =>
         () => props.changeFilter(filter, props.todoListID), [props.changeFilter, props.todoListID])
     const removeTodoList = useCallback(() =>
@@ -88,7 +64,28 @@ const TodoList = React.memo((props: TodoListPropsType) => {
             />
             <AddItemForm addItem={addTask}/>
             <List>
-                {tasksComponents}
+                {tasksForRender.map(t => {
+                    return (
+                        <Task
+                            key={t.id}
+                            //{...t}
+                            id={t.id}
+                            title={t.title}
+                            status={t.status}
+                            removeTask={removeTask}
+                            changeTaskStatus={changeTaskStatus}
+                            changeTaskTitle={changeTaskTitle}
+                            todoListId={props.todoListID}
+                            description={t.description}
+                            completed={t.completed}
+                            startDate={t.startDate}
+                            deadline={t.deadline}
+                            addedDate={t.addedDate}
+                            order={t.order}
+                            priority={t.priority}
+                        />
+                    )
+                })}
             </List>
             <ButtonsBlock filter={props.filter} setFilterValue={setFilterValue}/>
         </div>

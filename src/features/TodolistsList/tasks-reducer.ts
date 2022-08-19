@@ -1,7 +1,7 @@
 import {AddTodolistActionType, RemoveTodolistActionType, SetTodolistsActionType} from "./todolists-reducer";
-import {TaskType, todolistAPI, UpdateTaskModelType} from "../api/todolist-api";
+import {TaskType, todolistAPI, UpdateTaskModelType} from "../../api/todolist-api";
 import {Dispatch} from 'redux';
-import {AppRootStateType} from "./store";
+import {AppRootStateType} from "../../app/store";
 
 const initialState: TasksStateType = {}
 
@@ -38,18 +38,14 @@ export const tasksReducer = (state = initialState, action: TasksActionsType): Ta
 }
 
 // AC
-export const removeTaskAC = (taskId: string, todolistId: string) => {
-    return {type: 'REMOVE-TASK', taskId, todolistId} as const
-}
-export const addTaskAC = (task: TaskType) => {
-    return {type: 'ADD-TASK', task} as const
-}
-export const updateTaskAC = (taskId: string, model: UpdateDomainTaskModelType, todolistId: string) => {
-    return {type: 'UPDATE-TASK', taskId, model, todolistId} as const
-}
-export const setTasksAC = (todolistId: string, tasks: TaskType[]) => {
-    return {type: 'SET-TASKS', todolistId, tasks} as const
-}
+export const removeTaskAC = (taskId: string, todolistId: string) =>
+    ({type: 'REMOVE-TASK', taskId, todolistId} as const)
+export const addTaskAC = (task: TaskType) =>
+    ({type: 'ADD-TASK', task} as const)
+export const updateTaskAC = (taskId: string, model: UpdateDomainTaskModelType, todolistId: string) =>
+    ({type: 'UPDATE-TASK', taskId, model, todolistId} as const)
+export const setTasksAC = (todolistId: string, tasks: TaskType[]) =>
+    ({type: 'SET-TASKS', todolistId, tasks} as const)
 
 // thunk
 /*export const fetchTasksThunk = (dispatch: Dispatch) => {
@@ -111,10 +107,10 @@ export const updateTaskTC = (todolistId: string, taskId: string, domainModel: Up
     }
 
 // types
-export type RemoveTaskActionType = ReturnType<typeof removeTaskAC>
-export type AddTaskActionType = ReturnType<typeof addTaskAC>
-export type UpdateTaskActionType = ReturnType<typeof updateTaskAC>
-export type SetTasksActionType = ReturnType<typeof setTasksAC>
+type RemoveTaskActionType = ReturnType<typeof removeTaskAC>
+type AddTaskActionType = ReturnType<typeof addTaskAC>
+type UpdateTaskActionType = ReturnType<typeof updateTaskAC>
+type SetTasksActionType = ReturnType<typeof setTasksAC>
 type UpdateDomainTaskModelType = {
     title?: string
     description?: string
