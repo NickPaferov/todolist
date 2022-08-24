@@ -43,7 +43,7 @@ export type TodolistType = {
     addedDate: string
     order: number
 }
-type CommonResponseType<T = {}> = {
+export type CommonResponseType<T = {}> = {
     resultCode: number
     messages: Array<string>
     fieldsErrors: Array<string>

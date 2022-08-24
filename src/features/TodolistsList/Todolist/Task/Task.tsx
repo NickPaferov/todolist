@@ -2,9 +2,10 @@ import {Checkbox, IconButton, ListItem} from '@material-ui/core';
 import {DeleteOutline} from '@material-ui/icons';
 import React, {ChangeEvent, useCallback} from 'react';
 import EditableSpan from "../../../../components/EditableSpan/EditableSpan";
-import {TaskStatuses, TaskType} from "../../../../api/todolist-api";
+import {TaskStatuses} from "../../../../api/todolist-api";
+import {TaskDomainType} from "../../tasks-reducer";
 
-type TaskPropsType = TaskType & {
+type TaskPropsType = TaskDomainType & {
     removeTask: (id: string) => void
     changeTaskStatus: (id: string, status: TaskStatuses) => void
     changeTaskTitle: (id: string, title: string) => void
@@ -15,6 +16,7 @@ const Task: React.FC<TaskPropsType> = React.memo((
         id,
         status,
         title,
+        entityStatus,
         removeTask,
         changeTaskStatus,
         changeTaskTitle,
@@ -44,16 +46,18 @@ const Task: React.FC<TaskPropsType> = React.memo((
                 <Checkbox color="primary"
                           size="small"
                           onChange={onChangeChangeTaskStatus}
-                          checked={status === TaskStatuses.Completed}/>
+                          checked={status === TaskStatuses.Completed}
+                          disabled={entityStatus === 'loading'}
+                />
                 {/*
             <input
                 type="checkbox"
                 onChange={onChangeChangeTaskStatus}
                 checked={isDone}/>
 */}
-                <EditableSpan title={title} changeTitle={onChangeChangeTaskTitle}/>
+                <EditableSpan title={title} changeTitle={onChangeChangeTaskTitle} entityStatus={entityStatus}/>
             </span>
-            <IconButton onClick={onClickRemoveTask}>
+            <IconButton onClick={onClickRemoveTask} disabled={entityStatus === 'loading'}>
                 <DeleteOutline/>
             </IconButton>
             {/*<button onClick={onClickRemoveTask}>x</button>*/}

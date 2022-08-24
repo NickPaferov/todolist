@@ -3,16 +3,23 @@ import thunk, {ThunkDispatch} from "redux-thunk";
 import {TasksActionsType, tasksReducer} from "../features/TodolistsList/tasks-reducer";
 import {TodolistsActionsType, todolistsReducer} from "../features/TodolistsList/todolists-reducer";
 import {TypedUseSelectorHook, useDispatch, useSelector} from "react-redux";
+import {appReducer} from "./app-reducer";
 
 // объединяя reducer-ы с помощью combineReducers,
 // мы задаём структуру нашего единственного объекта-состояния
 const rootReducer = combineReducers({
     tasks: tasksReducer,
-    todoLists: todolistsReducer
+    todoLists: todolistsReducer,
+    app: appReducer
 })
 
 // непосредственно создаём store
 export const store = createStore(rootReducer, applyMiddleware(thunk))
+
+/*store.subscribe(()=>{
+    const state = store.getState()
+    console.log(state)
+})*/
 
 // определить автоматически тип всего объекта состояния
 export type AppRootStateType = ReturnType<typeof store.getState>

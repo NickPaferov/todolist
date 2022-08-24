@@ -7,13 +7,14 @@ import {Menu} from '@material-ui/icons';
 import TodoList from '../features/TodolistsList/Todolist/Todolist';
 import {FilterValuesType, TodolistDomainType} from "../features/TodolistsList/todolists-reducer";
 import {TaskPriorities, TaskStatuses, TaskType} from '../api/todolist-api';
+import {TaskDomainType} from "../features/TodolistsList/tasks-reducer";
 // C
 // R
 // U
 // D
 
 export type TasksStateType = {
-    [todoListID: string]: Array<TaskType>
+    [todoListID: string]: Array<TaskDomainType>
 }
 
 const App = () => {
@@ -23,78 +24,61 @@ const App = () => {
     const todoListID_3 = v1()
 
     const [todoLists, setTodoLists] = useState<Array<TodolistDomainType>>([
-        {id: todoListID_1, title: "What to learn", addedDate: '', order: 0, filter: "all"},
-        {id: todoListID_2, title: "What to buy", addedDate: '', order: 0, filter: "all"},
-        {id: todoListID_3, title: "What to read", addedDate: '', order: 0, filter: "all"},
+        {id: todoListID_1, title: "What to learn", addedDate: '', order: 0, filter: "all", entityStatus: "idle"},
+        {id: todoListID_2, title: "What to buy", addedDate: '', order: 0, filter: "all", entityStatus: "idle"},
+        {id: todoListID_3, title: "What to read", addedDate: '', order: 0, filter: "all", entityStatus: "idle"},
     ])
     const [tasks, setTasks] = useState<TasksStateType>({
         [todoListID_1]: [
             {
                 id: v1(), title: "HTML&CSS", status: TaskStatuses.Completed, todoListId: todoListID_1, description: '',
-                completed: true, startDate: '', deadline: '', addedDate: '', order: 0, priority: TaskPriorities.Low
+                completed: true, startDate: '', deadline: '', addedDate: '', order: 0, priority: TaskPriorities.Low,
+                entityStatus: 'idle'
             },
             {
                 id: v1(), title: "JS/ES6", status: TaskStatuses.Completed, todoListId: todoListID_1, description: '',
-                completed: true, startDate: '', deadline: '', addedDate: '', order: 0, priority: TaskPriorities.Low
+                completed: true, startDate: '', deadline: '', addedDate: '', order: 0, priority: TaskPriorities.Low,
+                entityStatus: 'idle'
             },
             {
                 id: v1(), title: "REACT", status: TaskStatuses.Completed, todoListId: todoListID_1, description: '',
-                completed: true, startDate: '', deadline: '', addedDate: '', order: 0, priority: TaskPriorities.Low
+                completed: true, startDate: '', deadline: '', addedDate: '', order: 0, priority: TaskPriorities.Low,
+                entityStatus: 'idle'
             },
         ],
         [todoListID_2]: [
             {
                 id: v1(), title: "MILK", status: TaskStatuses.Completed, todoListId: todoListID_2, description: '',
-                completed: true, startDate: '', deadline: '', addedDate: '', order: 0, priority: TaskPriorities.Low
+                completed: true, startDate: '', deadline: '', addedDate: '', order: 0, priority: TaskPriorities.Low,
+                entityStatus: 'idle'
             },
             {
                 id: v1(), title: "BREAD", status: TaskStatuses.New, todoListId: todoListID_2, description: '',
-                completed: false, startDate: '', deadline: '', addedDate: '', order: 0, priority: TaskPriorities.Low
+                completed: false, startDate: '', deadline: '', addedDate: '', order: 0, priority: TaskPriorities.Low,
+                entityStatus: 'idle'
             },
             {
                 id: v1(), title: "MEAT", status: TaskStatuses.Completed, todoListId: todoListID_2, description: '',
-                completed: true, startDate: '', deadline: '', addedDate: '', order: 0, priority: TaskPriorities.Low
+                completed: true, startDate: '', deadline: '', addedDate: '', order: 0, priority: TaskPriorities.Low,
+                entityStatus: 'idle'
             },
         ],
         [todoListID_3]: [
             {
-                id: v1(),
-                title: "You don't know JS",
-                status: TaskStatuses.Completed,
-                todoListId: todoListID_3,
-                description: '',
-                completed: true,
-                startDate: '',
-                deadline: '',
-                addedDate: '',
-                order: 0,
-                priority: TaskPriorities.Low
+                id: v1(), title: "You don't know JS", status: TaskStatuses.Completed, todoListId: todoListID_3,
+                description: '', completed: true, startDate: '', deadline: '', addedDate: '', order: 0,
+                priority: TaskPriorities.Low, entityStatus: 'idle'
             },
             {
                 id: v1(),
-                title: "Understanding Redux",
-                status: TaskStatuses.New,
-                todoListId: todoListID_3,
-                description: '',
-                completed: false,
-                startDate: '',
-                deadline: '',
-                addedDate: '',
-                order: 0,
-                priority: TaskPriorities.Low
+                title: "Understanding Redux", status: TaskStatuses.New, todoListId: todoListID_3,
+                description: '', completed: false, startDate: '', deadline: '', addedDate: '', order: 0,
+                priority: TaskPriorities.Low, entityStatus: 'idle'
             },
             {
-                id: v1(),
-                title: "How to learn React",
-                status: TaskStatuses.New,
-                todoListId: todoListID_3,
-                description: '',
-                completed: false,
-                startDate: '',
-                deadline: '',
-                addedDate: '',
-                order: 0,
-                priority: TaskPriorities.Low
+                id: v1(), title: "How to learn React", status: TaskStatuses.New, todoListId: todoListID_3,
+                description: '', completed: false, startDate: '', deadline: '', addedDate: '', order: 0,
+                priority: TaskPriorities.Low, entityStatus: 'idle'
             },
         ],
     })
@@ -122,7 +106,7 @@ const App = () => {
         // copyTasks[todoListID] = upDatedTasks
         // setTasks(copyTasks)
 
-        setTasks({...tasks, [todoListID]: [newTask, ...tasks[todoListID]]})
+        setTasks({...tasks, [todoListID]: [{...newTask, entityStatus: 'idle'}, ...tasks[todoListID]]})
     }
 
     const changeTaskStatus = (taskID: string, status: TaskStatuses, todoListID: string) => {
@@ -158,7 +142,7 @@ const App = () => {
     const addTodoList = (title: string) => {
         const newTodoListID = v1()
         const newTodoList: TodolistDomainType = {
-            id: newTodoListID, title, addedDate: '', order: 0, filter: "all"
+            id: newTodoListID, title, addedDate: '', order: 0, filter: "all", entityStatus: "idle"
         }
         setTodoLists([...todoLists, newTodoList])
         setTasks({...tasks, [newTodoListID]: []})
@@ -199,6 +183,7 @@ const App = () => {
                         title={tl.title}
                         tasks={tasksForRender}
                         filter={tl.filter}
+                        entityStatus={tl.entityStatus}
                         removeTask={removeTask}
                         changeFilter={changeTodoListFilter}
                         addTask={addTask}

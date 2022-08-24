@@ -1,9 +1,11 @@
 import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
 import {IconButton, TextField} from "@material-ui/core";
 import {AddBoxOutlined} from "@material-ui/icons";
+import {RequestStatusType} from "../../app/app-reducer";
 
 type AddItemFormPropsType = {
     addItem: (title: string) => void
+    entityStatus?: RequestStatusType
 }
 
 const AddItemForm: React.FC<AddItemFormPropsType> = React.memo((props) => {
@@ -43,6 +45,7 @@ const AddItemForm: React.FC<AddItemFormPropsType> = React.memo((props) => {
                        size="small"
                        error={error}
                        helperText={error && "Title is required!"}
+                       disabled={props.entityStatus === 'loading'}
             />
             {/*          <input
                 value={title}
@@ -50,7 +53,7 @@ const AddItemForm: React.FC<AddItemFormPropsType> = React.memo((props) => {
                 onKeyPress={onKeyPressAddItem}
                 className={error ? "error" : ""}
             />*/}
-            <IconButton onClick={onClickAddItem}>
+            <IconButton onClick={onClickAddItem} disabled={props.entityStatus === 'loading'}>
                 <AddBoxOutlined/>
             </IconButton>
             {/*<Button title={"+"} onClickHandler={onClickAddItem} active={false}/>*/}

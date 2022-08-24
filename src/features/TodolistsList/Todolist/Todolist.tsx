@@ -4,16 +4,18 @@ import Task from "./Task/Task";
 import AddItemForm from "../../../components/AddItemForm/AddItemForm";
 import ButtonsBlock from "../../../components/ButtonsBlock/ButtonsBlock";
 import {List} from '@material-ui/core';
-import {TaskStatuses, TaskType} from '../../../api/todolist-api';
+import {TaskStatuses} from '../../../api/todolist-api';
 import {FilterValuesType} from "../todolists-reducer";
-import {fetchTasksTC} from "../tasks-reducer";
+import {fetchTasksTC, TaskDomainType} from "../tasks-reducer";
 import {useAppDispatch} from "../../../app/store";
+import {RequestStatusType} from "../../../app/app-reducer";
 
 type TodoListPropsType = {
     todoListID: string
     title: string
-    tasks: Array<TaskType>
+    tasks: Array<TaskDomainType>
     filter: FilterValuesType
+    entityStatus: RequestStatusType
     removeTask: (taskID: string, todoListID: string) => void
     changeFilter: (filter: FilterValuesType, todoListID: string) => void
     addTask: (title: string, todoListID: string) => void
@@ -21,15 +23,19 @@ type TodoListPropsType = {
     changeTaskStatus: (taskID: string, status: TaskStatuses, todoListID: string) => void
     changeTaskTitle: (taskID: string, title: string, todoListID: string) => void
     changeTodoListTitle: (title: string, todoListID: string) => void
+    demo?: boolean
 }
 
-const TodoList = React.memo((props: TodoListPropsType) => {
+const TodoList = React.memo(({demo = false ,...props}: TodoListPropsType) => {
 
     console.log("Todolist")
 
     const dispatch = useAppDispatch()
 
     useEffect(() => {
+        if (demo) {
+            return;
+        }
         dispatch(fetchTasksTC(props.todoListID))
     }, [])
 
@@ -59,10 +65,14 @@ const TodoList = React.memo((props: TodoListPropsType) => {
         <div>
             <TodoListHeader
                 title={props.title}
+                entityStatus={props.entityStatus}
                 removeTodoList={removeTodoList}
                 changeTodoListTitle={changeTodoListTitle}
             />
-            <AddItemForm addItem={addTask}/>
+            <AddItemForm
+                addItem={addTask}
+                entityStatus={props.entityStatus}
+            />
             <List>
                 {tasksForRender.map(t => {
                     return (
@@ -83,6 +93,7 @@ const TodoList = React.memo((props: TodoListPropsType) => {
                             addedDate={t.addedDate}
                             order={t.order}
                             priority={t.priority}
+                            entityStatus={t.entityStatus}
                         />
                     )
                 })}
