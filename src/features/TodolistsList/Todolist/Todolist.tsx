@@ -7,7 +7,7 @@ import {List} from '@material-ui/core';
 import {TaskStatuses} from '../../../api/todolist-api';
 import {FilterValuesType} from "../todolists-reducer";
 import {fetchTasksTC, TaskDomainType} from "../tasks-reducer";
-import {useAppDispatch} from "../../../app/store";
+import {useAppDispatch, useAppSelector} from "../../../app/store";
 import {RequestStatusType} from "../../../app/app-reducer";
 
 type TodoListPropsType = {
@@ -29,11 +29,12 @@ type TodoListPropsType = {
 const TodoList = React.memo(({demo = false ,...props}: TodoListPropsType) => {
 
     console.log("Todolist")
+    const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn)
 
     const dispatch = useAppDispatch()
 
     useEffect(() => {
-        if (demo) {
+        if (demo || !isLoggedIn) {
             return;
         }
         dispatch(fetchTasksTC(props.todoListID))

@@ -1,4 +1,9 @@
-import {AddTodolistActionType, RemoveTodolistActionType, SetTodolistsActionType} from "./todolists-reducer";
+import {
+    AddTodolistActionType,
+    ClearStateActionType,
+    RemoveTodolistActionType,
+    SetTodolistsActionType
+} from "./todolists-reducer";
 import {TaskType, todolistAPI, UpdateTaskModelType} from "../../api/todolist-api";
 import {Dispatch} from 'redux';
 import {AppRootStateType} from "../../app/store";
@@ -43,6 +48,8 @@ export const tasksReducer = (state = initialState, action: TasksActionsType): Ta
             const copyState = {...state}
             delete copyState[action.id]
             return copyState
+        case "CLEAR-STATE":
+            return {}
         default:
             return state
     }
@@ -178,6 +185,7 @@ export type TasksActionsType =
     | SetTasksActionType
     | AppActionsType
     | ChangeTaskEntityStatusActionType
+    | ClearStateActionType
 export type TasksStateType = {
     [todoListID: string]: Array<TaskDomainType>
 }
