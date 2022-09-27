@@ -88,13 +88,11 @@ const AppWithReducers = () => {
     })
 
     const removeTask = (taskID: string, todoListID: string) => {
-        // let action = removeTaskAC(taskID, todoListID)
-        // dispatchToTasks(action)
-        dispatchToTasks(removeTaskAC(taskID, todoListID))
+        dispatchToTasks(removeTaskAC({taskId: taskID, todolistId: todoListID}))
     }
 
     const addTask = (title: string, todoListID: string) => {
-        let action = addTaskAC({
+        let action = addTaskAC({task: {
             id: "some id",
             startDate: "",
             deadline: "",
@@ -106,49 +104,41 @@ const AppWithReducers = () => {
             order: 0,
             priority: 0,
             addedDate: ""
-        })
+        }})
         dispatchToTasks(action)
     }
 
     const changeTaskStatus = (taskID: string, status: TaskStatuses, todoListID: string) => {
-        // let action = changeTaskStatusAC(taskID, isDone, todoListID)
-        // dispatchToTasks(action)
-        dispatchToTasks(updateTaskAC(taskID, {status}, todoListID))
+        dispatchToTasks(updateTaskAC({taskId: taskID, model: {status}, todolistId: todoListID}))
     }
 
     const changeTaskTitle = (taskID: string, title: string, todoListID: string) => {
-        // let action = changeTaskTitleAC(taskID, title, todoListID)
-        // dispatchToTasks(action)
-        dispatchToTasks(updateTaskAC(taskID, {title}, todoListID))
+        dispatchToTasks(updateTaskAC({taskId: taskID, model: {title}, todolistId: todoListID}))
     }
 
     const removeTodoList = (todoListID: string) => {
-        let action = removeTodolistAC(todoListID)
+        let action = removeTodolistAC({todolistId: todoListID})
         dispatchToTodoLists(action)
         dispatchToTasks(action)
     }
 
     const addTodoList = (title: string) => {
-        let action = addTodolistAC({
+        let action = addTodolistAC({todolist: {
             id: v1(),
             title: title,
             order: 0,
             addedDate: ""
-        })
+        }})
         dispatchToTodoLists(action)
         dispatchToTasks(action)
     }
 
     const changeTodoListTitle = (title: string, todoListID: string) => {
-        // let action = changeTodolistTitleAC(todoListID, title)
-        // dispatchToTodoLists(action)
-        dispatchToTodoLists(changeTodolistTitleAC(todoListID, title))
+        dispatchToTodoLists(changeTodolistTitleAC({todolistId: todoListID, title: title}))
     }
 
     const changeTodoListFilter = (filter: FilterValuesType, todoListID: string) => {
-        // let action = changeTodolistFilterAC(todoListID, filter)
-        // dispatchToTodoLists(action)
-        dispatchToTodoLists(changeTodolistFilterAC(todoListID, filter))
+        dispatchToTodoLists(changeTodolistFilterAC({todolistId: todoListID, filter: filter}))
     }
 
     const getTasksForRender = (todoList: TodolistDomainType) => {

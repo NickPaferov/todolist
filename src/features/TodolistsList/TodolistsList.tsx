@@ -66,7 +66,7 @@ const TodolistsList: React.FC<TodolistsListPropsType> = ({demo = false}) => {
     }, [dispatch, changeTodoListTitleTC])
 
     const changeTodoListFilter = useCallback((filter: FilterValuesType, todoListID: string) => {
-        dispatch(changeTodolistFilterAC(todoListID, filter))
+        dispatch(changeTodolistFilterAC({todolistId: todoListID, filter: filter}))
     }, [dispatch, changeTodolistFilterAC])
 
     if (!isLoggedIn) {
