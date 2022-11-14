@@ -32,7 +32,9 @@ const AppWithRedux: React.FC<AppWithReduxPropsType> = ({demo = false}) => {
     const dispatch = useAppDispatch()
 
     useEffect(() => {
-        dispatch(initializeAppTC())
+        if (!demo) {
+            dispatch(initializeAppTC())
+        }
     }, [])
 
     const logoutHandler = useCallback(() => {
