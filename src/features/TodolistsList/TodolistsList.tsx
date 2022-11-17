@@ -1,7 +1,6 @@
 import React, {useCallback, useEffect} from "react";
 import {useAppDispatch, useAppSelector} from "../../app/store";
 import {
-    addTodolistAC,
     addTodolistTC,
     changeTodolistFilterAC,
     changeTodoListTitleTC,
@@ -38,31 +37,31 @@ const TodolistsList: React.FC<TodolistsListPropsType> = ({demo = false}) => {
     }, [])
 
     const removeTask = useCallback((taskID: string, todoListID: string) => {
-        dispatch(removeTaskTC(todoListID, taskID))
+        dispatch(removeTaskTC({todolistId: todoListID, taskId: taskID}))
     }, [dispatch, removeTaskTC])
 
     const addTask = useCallback((title: string, todoListID: string) => {
-        dispatch(addTaskTC(todoListID, title))
+        dispatch(addTaskTC({todolistId: todoListID, taskTitle: title}))
     }, [dispatch, addTaskTC])
 
     const changeTaskStatus = useCallback((taskID: string, status: TaskStatuses, todoListID: string) => {
-        dispatch(updateTaskTC(todoListID, taskID, {status}))
+        dispatch(updateTaskTC({todolistId: todoListID, taskId: taskID, domainModel: {status}}))
     }, [dispatch, updateTaskTC])
 
     const changeTaskTitle = useCallback((taskID: string, title: string, todoListID: string) => {
-        dispatch(updateTaskTC(todoListID, taskID, {title}))
+        dispatch(updateTaskTC({todolistId: todoListID, taskId: taskID, domainModel: {title}}))
     }, [dispatch, updateTaskTC])
 
     const removeTodoList = useCallback((todoListID: string) => {
-        dispatch(removeTodolistTC(todoListID))
+        dispatch(removeTodolistTC({todolistId: todoListID}))
     }, [dispatch, removeTodolistTC])
 
     const addTodoList = useCallback((title: string) => {
-        dispatch(addTodolistTC(title))
-    }, [dispatch, addTodolistAC])
+        dispatch(addTodolistTC({title: title}))
+    }, [dispatch, addTodolistTC])
 
     const changeTodoListTitle = useCallback((title: string, todoListID: string) => {
-        dispatch(changeTodoListTitleTC(todoListID, title))
+        dispatch(changeTodoListTitleTC({todolistId: todoListID, title: title}))
     }, [dispatch, changeTodoListTitleTC])
 
     const changeTodoListFilter = useCallback((filter: FilterValuesType, todoListID: string) => {

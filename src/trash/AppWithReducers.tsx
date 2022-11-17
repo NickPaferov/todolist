@@ -6,15 +6,13 @@ import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography}
 import {Menu} from '@material-ui/icons';
 import TodoList from '../features/TodolistsList/Todolist/Todolist';
 import {
-    addTodolistAC,
-    changeTodolistFilterAC,
-    changeTodolistTitleAC,
-    FilterValuesType,
-    removeTodolistAC,
+    addTodolistTC,
+    changeTodolistFilterAC, changeTodoListTitleTC,
+    FilterValuesType, removeTodolistTC,
     TodolistDomainType,
     todolistsReducer
 } from "../features/TodolistsList/todolists-reducer";
-import {addTaskAC, removeTaskAC, tasksReducer, updateTaskAC} from "../features/TodolistsList/tasks-reducer";
+import {addTaskTC, removeTaskTC, tasksReducer, updateTaskTC} from "../features/TodolistsList/tasks-reducer";
 import {TaskPriorities, TaskStatuses} from '../api/todolist-api';
 // C
 // R
@@ -88,11 +86,14 @@ const AppWithReducers = () => {
     })
 
     const removeTask = (taskID: string, todoListID: string) => {
-        dispatchToTasks(removeTaskAC({taskId: taskID, todolistId: todoListID}))
+        dispatchToTasks(removeTaskTC.fulfilled({taskId: taskID, todolistId: todoListID}, "requestId", {
+            taskId: taskID,
+            todolistId: todoListID
+        }))
     }
 
     const addTask = (title: string, todoListID: string) => {
-        let action = addTaskAC({task: {
+        const task = {
             id: "some id",
             startDate: "",
             deadline: "",
@@ -104,37 +105,50 @@ const AppWithReducers = () => {
             order: 0,
             priority: 0,
             addedDate: ""
-        }})
+        }
+        let action = addTaskTC.fulfilled(task, "requestId", {todolistId: task.todoListId, taskTitle: task.title})
         dispatchToTasks(action)
     }
 
     const changeTaskStatus = (taskID: string, status: TaskStatuses, todoListID: string) => {
-        dispatchToTasks(updateTaskAC({taskId: taskID, model: {status}, todolistId: todoListID}))
+        dispatchToTasks(updateTaskTC.fulfilled({
+            taskId: taskID,
+            model: {status},
+            todolistId: todoListID
+        }, "requestId", {taskId: taskID, domainModel: {status}, todolistId: todoListID}))
     }
 
     const changeTaskTitle = (taskID: string, title: string, todoListID: string) => {
-        dispatchToTasks(updateTaskAC({taskId: taskID, model: {title}, todolistId: todoListID}))
+        dispatchToTasks(updateTaskTC.fulfilled({
+            taskId: taskID,
+            model: {title},
+            todolistId: todoListID
+        }, "requestId", {taskId: taskID, domainModel: {title}, todolistId: todoListID}))
     }
 
     const removeTodoList = (todoListID: string) => {
-        let action = removeTodolistAC({todolistId: todoListID})
+        let action = removeTodolistTC.fulfilled({todolistId: todoListID}, "requestId", {todolistId: todoListID})
         dispatchToTodoLists(action)
         dispatchToTasks(action)
     }
 
     const addTodoList = (title: string) => {
-        let action = addTodolistAC({todolist: {
+        const todolist = {
             id: v1(),
             title: title,
             order: 0,
             addedDate: ""
-        }})
+        }
+        let action = addTodolistTC.fulfilled({todolist}, "requestId", {title: todolist.title})
         dispatchToTodoLists(action)
         dispatchToTasks(action)
     }
 
     const changeTodoListTitle = (title: string, todoListID: string) => {
-        dispatchToTodoLists(changeTodolistTitleAC({todolistId: todoListID, title: title}))
+        dispatchToTodoLists(changeTodoListTitleTC.fulfilled({
+            todolistId: todoListID,
+            title: title
+        }, "requestId", {todolistId: todoListID, title: title}))
     }
 
     const changeTodoListFilter = (filter: FilterValuesType, todoListID: string) => {
