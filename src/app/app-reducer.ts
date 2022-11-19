@@ -20,10 +20,11 @@ export const initializeAppTC = createAsyncThunk("app/initializeApp", async (para
             handleAppError(thunkAPI.dispatch, res.data)
             return thunkAPI.rejectWithValue(null)
         }
-        return
     } catch (error: any) {
         handleNetworkError(thunkAPI.dispatch, error.message)
         return thunkAPI.rejectWithValue(null)
+    } finally {
+        return
     }
 })
 
