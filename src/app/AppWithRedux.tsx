@@ -68,7 +68,6 @@ const AppWithRedux: React.FC<AppWithReduxPropsType> = ({demo = false}) => {
                     <Route path="/" element={<TodolistsList demo={demo}/>}/>
                     <Route path="/login" element={<Login/>}/>
                     <Route path="/404" element={<h1 style={{textAlign: "center"}}>404 Page not found</h1>}/>
-                    <Route path="/todolist" element={<Navigate to="/"/>}/>
                     <Route path="*" element={<Navigate to="/404"/>}/>
                 </Routes>
             </Container>
